@@ -7,7 +7,9 @@ jobs:
       - image: circleci/node:13.8.0
     steps:
       - checkout
-      - run: npm run lint
+      - run: |
+          npm install
+          npm run lint
   test:
     docker: 
       - image: circleci/node:13.8.0

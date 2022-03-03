@@ -7,20 +7,55 @@ jobs:
       - image: circleci/node:13.8.0
     steps:
       - checkout
-      - run: |
-          npm install
-          npm run lint
+      # look for existing cache and restore if found
+      - restore_cache:
+          key: v1-deps-{{ checksum "package-lock.json" }}
+      # install dependencies    
+      - run:
+          name: install dependencies
+          command: npm install
+      # save any changes to the cache
+      - save_cache:
+          key: v1-deps-{{ checksum "package-lock.json" }}
+          paths: 
+            - node_modules   
+      # run build
+      - run: npm run lint
   test:
     docker: 
       - image: circleci/node:13.8.0
     steps:
       - checkout
+      # look for existing cache and restore if found
+      - restore_cache:
+          key: v1-deps-{{ checksum "package-lock.json" }}
+      # install dependencies    
+      - run:
+          name: install dependencies
+          command: npm install
+      # save any changes to the cache
+      - save_cache:
+          key: v1-deps-{{ checksum "package-lock.json" }}
+          paths: 
+            - node_modules   
       - run: npm run test
   analyze:
     docker: 
       - image: circleci/node:13.8.0
     steps:
       - checkout
+      # look for existing cache and restore if found
+      - restore_cache:
+          key: v1-deps-{{ checksum "package-lock.json" }}
+      # install dependencies    
+      - run:
+          name: install dependencies
+          command: npm install
+      # save any changes to the cache
+      - save_cache:
+          key: v1-deps-{{ checksum "package-lock.json" }}
+          paths: 
+            - node_modules   
       - run: npm audit
 
 
